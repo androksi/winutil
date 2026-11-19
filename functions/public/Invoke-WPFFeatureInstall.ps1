@@ -6,13 +6,16 @@ function Invoke-WPFFeatureInstall {
 
     #>
 
-    if ($null -eq $sync.selectedFeatures -or $sync.selectedFeatures.Count -eq 0) {
+    # Font checkboxes share the feature selection; Install Fonts handles those
+    $features = @($sync.selectedFeatures | Where-Object { -not $sync.configs.feature.$_.fontRepository })
+
+    if ($features.Count -eq 0) {
         Show-WinUtilMessage -Message "No Windows Feature selected" -Title "WinUtil" -Button "OK" -Icon "Warning"
         return
     }
 
     Start-WinUtilJob -Name "Features" -Description "Installing Windows features" -QueueIfBusy -Parameters @{
-        Features = @($sync.selectedFeatures)
+        Features = $features
     } -ScriptBlock {
         param($Features)
 

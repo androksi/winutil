@@ -38,9 +38,9 @@ function Invoke-WPFButton {
     )
 
     $featureEntry = $sync.configs.feature.$Button
-    # Feature installation owns its selection validation and snapshots the selection before it
-    # starts a job. Wrapping it here would turn its "nothing selected" return into job success.
-    $isConfigWork = $featureEntry -and $Button -ne "WPFFeatureInstall" -and
+    # Feature and font installation own their selection validation and snapshot the selection
+    # before they start a job. Wrapping them here would turn a "nothing selected" return into job success.
+    $isConfigWork = $featureEntry -and $Button -notin @("WPFFeatureInstall", "WPFFontInstall", "WPFFontUninstall") -and
         ($Button -notlike "WPFPanel*" -or $featureEntry.function)
 
     if ($isConfigWork -or $workButtons -contains $Button) {

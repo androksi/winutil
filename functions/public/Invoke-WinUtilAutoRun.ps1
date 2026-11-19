@@ -29,7 +29,8 @@ function Invoke-WinUtilAutoRun {
     $steps = @(
         [pscustomobject]@{ Name = "Tweaks";          Count = @($sync.selectedTweaks).Count;   Action = { Invoke-WPFtweaksbutton } }
         [pscustomobject]@{ Name = "Toggles";         Count = @($sync.selectedToggles).Count;  Action = { Invoke-WPFToggleSelections } }
-        [pscustomobject]@{ Name = "Features";        Count = @($sync.selectedFeatures).Count; Action = { Invoke-WPFFeatureInstall } }
+        [pscustomobject]@{ Name = "Features";        Count = @($sync.selectedFeatures | Where-Object { -not $sync.configs.feature.$_.fontRepository }).Count; Action = { Invoke-WPFFeatureInstall } }
+        [pscustomobject]@{ Name = "Fonts";           Count = @($sync.selectedFeatures | Where-Object { $sync.configs.feature.$_.fontRepository }).Count; Action = { Invoke-WPFFontInstall } }
         [pscustomobject]@{ Name = "Applications";    Count = @($sync.selectedApps).Count;     Action = { Invoke-WPFInstall } }
         [pscustomobject]@{ Name = "AppX removal";    Count = @($sync.selectedAppx).Count;     Action = { Invoke-WPFAppxRemoval } }
     )

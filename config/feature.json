@@ -123,6 +123,105 @@
     "function": "Invoke-WPFFixesWinget",
     "link": "https://winutil.christitus.com/code-reference/features/fixes/winget"
   },
+  "WPFFeatureFontJetBrainsMono": {
+    "Content": "JetBrains Mono",
+    "Description": "JetBrains' monospaced font for code, with ligatures. Installed for the current user from the latest JetBrains/JetBrainsMono release (about 5 MB).",
+    "category": "Fonts",
+    "panel": "1",
+    "fontRepository": "JetBrains/JetBrainsMono",
+    "fontAsset": "^JetBrainsMono-.*\\.zip$",
+    "link": "https://winutil.christitus.com/code-reference/features/fonts/jetbrainsmono"
+  },
+  "WPFFeatureFontSourceCodePro": {
+    "Content": "Source Code Pro",
+    "Description": "Adobe's monospaced font for code. Installed for the current user from the latest adobe-fonts/source-code-pro release (about 1 MB).",
+    "category": "Fonts",
+    "panel": "1",
+    "fontRepository": "adobe-fonts/source-code-pro",
+    "fontAsset": "^TTF-source-code-pro-.*\\.zip$",
+    "link": "https://winutil.christitus.com/code-reference/features/fonts/sourcecodepro"
+  },
+  "WPFFeatureFontFiraCode": {
+    "Content": "Fira Code",
+    "Description": "Monospaced font for code with programming ligatures. Installed for the current user from the latest tonsky/FiraCode release (about 2 MB).",
+    "category": "Fonts",
+    "panel": "1",
+    "fontRepository": "tonsky/FiraCode",
+    "fontAsset": "^Fira_Code_.*\\.zip$",
+    "link": "https://winutil.christitus.com/code-reference/features/fonts/firacode"
+  },
+  "WPFFeatureFontCascadiaCode": {
+    "Content": "Cascadia Code",
+    "Description": "Microsoft's monospaced font from Windows Terminal, including Cascadia Mono. Installed for the current user from the latest microsoft/cascadia-code release (about 145 MB download).",
+    "category": "Fonts",
+    "panel": "1",
+    "fontRepository": "microsoft/cascadia-code",
+    "fontAsset": "^CascadiaCode-.*\\.zip$",
+    "link": "https://winutil.christitus.com/code-reference/features/fonts/cascadiacode"
+  },
+  "WPFFeatureFontJetBrainsMonoNerd": {
+    "Content": "JetBrainsMono Nerd Font",
+    "Description": "JetBrains Mono with Nerd Font icons for terminals and prompts. Installed for the current user from the latest ryanoasis/nerd-fonts release (about 130 MB download).",
+    "category": "Fonts",
+    "panel": "1",
+    "fontRepository": "ryanoasis/nerd-fonts",
+    "fontAsset": "^JetBrainsMono\\.zip$",
+    "link": "https://winutil.christitus.com/code-reference/features/fonts/jetbrainsmononerd"
+  },
+  "WPFFeatureFontFiraCodeNerd": {
+    "Content": "FiraCode Nerd Font",
+    "Description": "Fira Code with Nerd Font icons for terminals and prompts. Installed for the current user from the latest ryanoasis/nerd-fonts release (about 30 MB download).",
+    "category": "Fonts",
+    "panel": "1",
+    "fontRepository": "ryanoasis/nerd-fonts",
+    "fontAsset": "^FiraCode\\.zip$",
+    "link": "https://winutil.christitus.com/code-reference/features/fonts/firacodenerd"
+  },
+  "WPFFeatureFontCaskaydiaCoveNerd": {
+    "Content": "CaskaydiaCove Nerd Font",
+    "Description": "Cascadia Code with Nerd Font icons for terminals and prompts. Installed for the current user from the latest ryanoasis/nerd-fonts release (about 55 MB download).",
+    "category": "Fonts",
+    "panel": "1",
+    "fontRepository": "ryanoasis/nerd-fonts",
+    "fontAsset": "^CascadiaCode\\.zip$",
+    "link": "https://winutil.christitus.com/code-reference/features/fonts/caskaydiacovenerd"
+  },
+  "WPFFeatureFontHackNerd": {
+    "Content": "Hack Nerd Font",
+    "Description": "Hack with Nerd Font icons for terminals and prompts. Installed for the current user from the latest ryanoasis/nerd-fonts release (about 20 MB download).",
+    "category": "Fonts",
+    "panel": "1",
+    "fontRepository": "ryanoasis/nerd-fonts",
+    "fontAsset": "^Hack\\.zip$",
+    "link": "https://winutil.christitus.com/code-reference/features/fonts/hacknerd"
+  },
+  "WPFFeatureFontMesloNerd": {
+    "Content": "Meslo Nerd Font",
+    "Description": "Meslo with Nerd Font icons, the font oh-my-posh recommends. Installed for the current user from the latest ryanoasis/nerd-fonts release (about 115 MB download).",
+    "category": "Fonts",
+    "panel": "1",
+    "fontRepository": "ryanoasis/nerd-fonts",
+    "fontAsset": "^Meslo\\.zip$",
+    "link": "https://winutil.christitus.com/code-reference/features/fonts/meslonerd"
+  },
+  "WPFFontInstall": {
+    "Content": "Install Fonts",
+    "category": "Fonts",
+    "panel": "1",
+    "Type": "Button",
+    "ButtonWidth": "300",
+    "function": "Invoke-WPFFontInstall",
+    "link": "https://winutil.christitus.com/code-reference/features/fonts/install"
+  },
+  "WPFFontUninstall": {
+    "Content": "Remove Fonts",
+    "category": "Fonts",
+    "panel": "1",
+    "Type": "Button",
+    "ButtonWidth": "300",
+    "function": "Invoke-WPFFontUninstall",
+    "link": "https://winutil.christitus.com/code-reference/features/fonts/uninstall"
+  },
   "WPFPanelComputer": {
     "Content": "Computer Management",
     "category": "Legacy Windows Panels",

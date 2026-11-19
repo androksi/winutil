@@ -37,6 +37,19 @@ Use these when you have a specific issue to correct, not as a routine cleanup st
 * System Corruption Scan
 * WinGet Reinstall
 
+## Fonts
+
+Select fonts and click **Install Fonts** to install them for your account only; other accounts on the PC are not affected and no administrator rights are used for the font itself.
+
+* JetBrains Mono, Source Code Pro, Fira Code, Cascadia Code
+* Nerd Fonts with terminal icons: JetBrainsMono, FiraCode, CaskaydiaCove, Hack, and Meslo
+
+Each font is downloaded from the latest release of its official GitHub project, so some downloads are large (Cascadia Code and the JetBrainsMono and Meslo Nerd Fonts are over 100 MB). Static builds are installed when a release has them. A font file that is already installed is left as it is. Programs that were open during the install may need to be restarted to list the new fonts.
+
+**Remove Fonts** removes the selected fonts, but only the files WinUtil installed; a font you installed another way stays. If a program still has a font open, that file is unregistered and removed the next time you click **Remove Fonts** after closing the program.
+
+**Install Features** ignores selected fonts, and **Install Fonts** ignores selected Windows features. An exported configuration includes selected fonts, and `-Config` installs them.
+
 ## Legacy Windows Panels
 
 Open old-school Windows panels directly from WinUtil. Available panels include:

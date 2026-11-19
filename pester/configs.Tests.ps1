@@ -630,8 +630,12 @@ Describe "UI-rendered config entries" {
                     $invalidEntries.Add("$($entry.Name) missing Description")
                 }
 
-                if (-not $entry.Value.feature -and -not $entry.Value.InvokeScript) {
-                    $invalidEntries.Add("$($entry.Name) missing feature or InvokeScript action")
+                if (-not $entry.Value.feature -and -not $entry.Value.InvokeScript -and -not $entry.Value.fontRepository) {
+                    $invalidEntries.Add("$($entry.Name) missing feature, InvokeScript or fontRepository action")
+                }
+
+                if ($entry.Value.fontRepository -and -not $entry.Value.fontAsset) {
+                    $invalidEntries.Add("$($entry.Name) has fontRepository without fontAsset")
                 }
             }
 
