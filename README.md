@@ -17,6 +17,11 @@ A curated compilation of Windows system tasks to streamline **installs**, debloa
 
 Open PowerShell or Terminal as admin, then run:
 
+**This fork (androksi/winutil)**
+```ps1
+irm https://androksi.github.io/winutil/win | iex
+```
+
 **Stable Branch (recommended)**
 ```ps1
 irm https://christitus.com/win | iex

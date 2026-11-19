@@ -124,3 +124,5 @@ Because the final script is concatenated, code cannot rely on runtime module imp
 ## Release Artifact
 
 GitHub Actions is responsible for producing the release `winutil.ps1` from repository sources. A release is considered valid only if the generated script came from the compile process, not from direct manual edits to `winutil.ps1`.
+
+In the `androksi/winutil` fork, `script-pages.yaml` compiles `main` on every push and publishes the script to GitHub Pages as `https://androksi.github.io/winutil/win` (and `/winutil.ps1`). The non-admin elevation relaunch in `scripts/start.ps1` and the exported-config command in `Invoke-WPFImpex` download from that address, so an elevated run uses this fork's build rather than the upstream release.
