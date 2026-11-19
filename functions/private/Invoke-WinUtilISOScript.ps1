@@ -554,7 +554,6 @@ $appxList
     }
 
     Write-Host 'WinUtil: Applying registry tweaks...'
-    Set-WinUtilRegistryValue 'HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\ReserveManager' 'ShippedWithReserves' 'REG_DWORD' '0'
     Set-WinUtilRegistryValue 'HKLM\SYSTEM\CurrentControlSet\Control\BitLocker' 'PreventDeviceEncryption' 'REG_DWORD' '1'
     Set-WinUtilRegistryValue 'HKLM\SOFTWARE\Policies\Microsoft\Windows\Windows Chat' 'ChatIcon' 'REG_DWORD' '3'
     Set-WinUtilRegistryValue 'HKLM\SOFTWARE\Policies\Microsoft\Windows\DataCollection' 'AllowTelemetry' 'REG_DWORD' '0'
@@ -576,7 +575,6 @@ $appxList
     Set-WinUtilRegistryValue 'HKLM\SYSTEM\Setup\LabConfig' 'BypassTPMCheck' 'REG_DWORD' '1'
     Set-WinUtilRegistryValue 'HKLM\SYSTEM\Setup\MoSetup' 'AllowUpgradesWithUnsupportedTPMOrCPU' 'REG_DWORD' '1'
     Set-WinUtilRegistryValue 'HKLM\SOFTWARE\Policies\Microsoft\PushToInstall' 'DisablePushToInstall' 'REG_DWORD' '1'
-    Set-WinUtilRegistryValue 'HKLM\SOFTWARE\Policies\Microsoft\MRT' 'DontOfferThroughWUAU' 'REG_DWORD' '1'
     Set-WinUtilRegistryValue 'HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Orchestrator\UScheduler_Oobe\OutlookUpdate' 'workCompleted' 'REG_DWORD' '1'
     Set-WinUtilRegistryValue 'HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Orchestrator\UScheduler\OutlookUpdate' 'workCompleted' 'REG_DWORD' '1'
     Set-WinUtilRegistryValue 'HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Orchestrator\UScheduler\DevHomeUpdate' 'workCompleted' 'REG_DWORD' '1'
@@ -626,21 +624,19 @@ $appxList
     Set-WinUtilRegistryValue 'HKCU\Software\Microsoft\InputPersonalization\TrainedDataStore' 'HarvestContacts' 'REG_DWORD' '0'
     Set-WinUtilRegistryValue 'HKCU\Software\Microsoft\Personalization\Settings' 'AcceptedPrivacyPolicy' 'REG_DWORD' '0'
 
-    Write-Host 'WinUtil: Removing scheduled task definitions...'
-    `$taskPaths = @(
-        'C:\Windows\System32\Tasks\Microsoft\Windows\Application Experience\Microsoft Compatibility Appraiser',
-        'C:\Windows\System32\Tasks\Microsoft\Windows\Customer Experience Improvement Program',
-        'C:\Windows\System32\Tasks\Microsoft\Windows\Application Experience\ProgramDataUpdater',
-        'C:\Windows\System32\Tasks\Microsoft\Windows\Chkdsk\Proxy',
-        'C:\Windows\System32\Tasks\Microsoft\Windows\Windows Error Reporting\QueueReporting',
-        'C:\Windows\System32\Tasks\Microsoft\Windows\InstallService',
-        'C:\Windows\System32\Tasks\Microsoft\Windows\UpdateOrchestrator',
-        'C:\Windows\System32\Tasks\Microsoft\Windows\UpdateAssistant',
-        'C:\Windows\System32\Tasks\Microsoft\Windows\WaaSMedic',
-        'C:\Windows\System32\Tasks\Microsoft\Windows\WindowsUpdate',
-        'C:\Windows\System32\Tasks\Microsoft\WindowsUpdate'
+    Write-Host 'WinUtil: Disabling telemetry scheduled tasks...'
+    # Disabled rather than deleted: deleting the task files left broken Task Scheduler entries, and
+    # the Windows Update and Store tasks it also deleted never came back after first logon
+    `$telemetryTasks = @(
+        # Newer builds name it "Microsoft Compatibility Appraiser Exp"
+        @{ Path = '\Microsoft\Windows\Application Experience\'; Name = 'Microsoft Compatibility Appraiser*' },
+        @{ Path = '\Microsoft\Windows\Application Experience\'; Name = 'ProgramDataUpdater' },
+        @{ Path = '\Microsoft\Windows\Customer Experience Improvement Program\'; Name = '*' }
     )
-    foreach (`$taskPath in `$taskPaths) { Remove-Item -LiteralPath `$taskPath -Recurse -Force -ErrorAction SilentlyContinue }
+    foreach (`$task in `$telemetryTasks) {
+        Get-ScheduledTask -TaskPath `$task.Path -TaskName `$task.Name -ErrorAction SilentlyContinue |
+            Disable-ScheduledTask -ErrorAction SilentlyContinue | Out-Null
+    }
 
     Start-Process -FilePath 'C:\Windows\System32\OneDriveSetup.exe' -ArgumentList '/uninstall' -Wait -ErrorAction SilentlyContinue
     Write-Host 'WinUtil: Post-install customization complete.'

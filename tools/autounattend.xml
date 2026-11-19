@@ -64,10 +64,6 @@
                     <Order>7</Order>
                     <Path>reg.exe add "HKLM\SYSTEM\CurrentControlSet\Control\BitLocker" /v PreventDeviceEncryption /t REG_DWORD /d 1 /f</Path>
                 </RunSynchronousCommand>
-                <RunSynchronousCommand wcm:action="add">
-                    <Order>8</Order>
-                    <Path>reg.exe add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\ReserveManager" /v ShippedWithReserves /t REG_DWORD /d 0 /f</Path>
-                </RunSynchronousCommand>
             </RunSynchronous>
         </component>
     </settings>
@@ -490,14 +486,6 @@ $scripts = @(
             Set-Service -Name $name -StartupType $services[$name] -ErrorAction Continue;
         }
         Set-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Services\WaaSMedicSvc' -Name 'Start' -Value 3 -Type DWord -ErrorAction Continue;
-    };
-    {
-        reg.exe add "HKLM\SOFTWARE\Microsoft\PolicyManager\current\device\Education" /f;
-        reg.exe add "HKLM\SOFTWARE\Microsoft\PolicyManager\current\device\Start" /f;
-        reg.exe add "HKLM\SOFTWARE\Policies\Microsoft\Windows\Explorer" /f;
-        reg.exe add "HKLM\SOFTWARE\Microsoft\PolicyManager\current\device\Education" /v IsEducationEnvironment /t REG_DWORD /d 1 /f;
-        reg.exe add "HKLM\SOFTWARE\Policies\Microsoft\Windows\Explorer" /v HideRecommendedSection /t REG_DWORD /d 1 /f;
-        reg.exe add "HKLM\SOFTWARE\Microsoft\PolicyManager\current\device\Start" /v HideRecommendedSection /t REG_DWORD /d 1 /f;
     };
     {
         $recallFeature = Get-WindowsOptionalFeature -Online -ErrorAction SilentlyContinue | Where-Object { $_.State -eq 'Enabled' -and $_.FeatureName -like 'Recall' };

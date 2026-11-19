@@ -178,9 +178,29 @@ Describe "Win11 Creator setup media" {
         $nsMgr.AddNamespace("u", "urn:schemas-microsoft-com:unattend")
         $paths = @($xml.SelectNodes('/u:unattend/u:settings[@pass="specialize"]/u:component[@name="Microsoft-Windows-Deployment"]/u:RunSynchronous/u:RunSynchronousCommand/u:Path', $nsMgr) | ForEach-Object InnerText) -join "`n"
 
-        foreach ($valueName in 'BypassNRO', 'PreventDeviceEncryption', 'ShippedWithReserves') {
+        foreach ($valueName in 'BypassNRO', 'PreventDeviceEncryption') {
             $paths | Should -Match ([regex]::Escape($valueName))
         }
+    }
+
+    It "leaves reserved storage, the education environment flag, and MRT offering alone" {
+        $autoUnattend = Get-Content -Path $script:autoUnattendPath -Raw
+        $isoScript = Get-Content -Path (Join-Path $PSScriptRoot "..\functions\private\Invoke-WinUtilISOScript.ps1") -Raw
+
+        # Disabling reserved storage can make feature updates fail for lack of space
+        $autoUnattend | Should -Not -Match 'ShippedWithReserves'
+        $isoScript | Should -Not -Match 'ShippedWithReserves'
+        # Marking the device as an education environment changes more than the Start menu
+        $autoUnattend | Should -Not -Match 'IsEducationEnvironment'
+        $isoScript | Should -Not -Match 'DontOfferThroughWUAU'
+    }
+
+    It "disables telemetry tasks instead of deleting task definitions" {
+        $isoScript = Get-Content -Path (Join-Path $PSScriptRoot "..\functions\private\Invoke-WinUtilISOScript.ps1") -Raw
+
+        # Deleted task files never come back, which took the Windows Update and Store tasks for good
+        $isoScript | Should -Not -Match 'System32\\Tasks'
+        $isoScript | Should -Match 'Disable-ScheduledTask'
     }
 
     It "ISO script accepts selected edition and driver-only WIM servicing metadata" {
