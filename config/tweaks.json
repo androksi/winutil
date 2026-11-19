@@ -891,7 +891,7 @@
   },
   "WPFTweaksDisableSpotlight": {
     "Content": "Windows Spotlight - Disable",
-    "Description": "Turns off Windows Spotlight images and tips on the lock screen. If Spotlight is the desktop background, replaces it with the default Windows wallpaper for the current light or dark mode. Undo turns lock screen Spotlight back on; turn desktop Spotlight back on in Settings.",
+    "Description": "Turns off Windows Spotlight images and tips on the lock screen. If Spotlight is the desktop background, switches the background to Picture with the default Windows wallpaper for the current light or dark mode, removes the \"Learn about this picture\" desktop icon, and restarts Explorer. Undo turns lock screen Spotlight back on; turn desktop Spotlight back on in Settings.",
     "category": "z__Advanced Tweaks - CAUTION",
     "panel": "1",
     "registry": [
@@ -919,10 +919,14 @@
     ],
     "InvokeScript": [
       "
-      # The Spotlight policies only apply to Enterprise and Education, so on other editions the
-      # desktop leaves Spotlight only when a picture wallpaper is set
-      $desktopSpotlight = Get-ItemProperty -Path 'HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\DesktopSpotlight\\Settings' -ErrorAction SilentlyContinue
-      if ($desktopSpotlight -and $desktopSpotlight.EnabledState -eq 1) {
+      # The Spotlight policies only apply to Enterprise and Education, so on other editions this
+      # makes the same changes Settings makes when the background is switched to Picture
+      $spotlightSettings = 'HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\DesktopSpotlight\\Settings'
+      $wallpapers = 'HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Wallpapers'
+      $spotlightIcon = 'HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Desktop\\NameSpace\\{2cc5ca98-6485-489a-920e-b3e88a6ccce3}'
+      $enabledState = (Get-ItemProperty -Path $spotlightSettings -ErrorAction SilentlyContinue).EnabledState
+      $backgroundType = (Get-ItemProperty -Path $wallpapers -ErrorAction SilentlyContinue).BackgroundType
+      if ($enabledState -eq 1 -or $backgroundType -eq 3) {
           $systemLight = (Get-ItemProperty -Path 'HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize' -ErrorAction SilentlyContinue).SystemUsesLightTheme
           $image = if ($systemLight -eq 0) { 'img19.jpg' } else { 'img0.jpg' }
           $wallpaper = Join-Path $Env:SystemRoot \"Web\\Wallpaper\\Windows\\$image\"
@@ -935,6 +939,19 @@
           if (-not [WinUtilWallpaper]::SystemParametersInfo(0x0014, 0, $wallpaper, 3)) {
               throw \"Could not set $wallpaper as the desktop wallpaper (Win32 error $([System.Runtime.InteropServices.Marshal]::GetLastWin32Error())).\"
           }
+
+          # A new wallpaper alone leaves Spotlight mode on: BackgroundType 0 is Picture (3 is Spotlight)
+          if (-not (Test-Path -Path $wallpapers)) { New-Item -Path $wallpapers -Force | Out-Null }
+          Set-ItemProperty -Path $wallpapers -Name BackgroundType -Value 0 -Type DWord
+          if (Test-Path -Path $spotlightSettings) {
+              Set-ItemProperty -Path $spotlightSettings -Name EnabledState -Value 0 -Type DWord
+          }
+          # The \"Learn about this picture\" desktop icon
+          if (Test-Path -LiteralPath $spotlightIcon) {
+              Remove-Item -LiteralPath $spotlightIcon -Recurse -Force
+          }
+          Invoke-WinUtilExplorerUpdate -action \"restart\"
+
           Write-Host \"Replaced the Windows Spotlight desktop background with $wallpaper\"
       } else {
           Write-Host 'Windows Spotlight is not the desktop background; the wallpaper was left unchanged.'
