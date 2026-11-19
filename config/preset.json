@@ -2,13 +2,10 @@
   "Standard": [
     "WPFTweaksActivity",
     "WPFTweaksConsumerFeatures",
-    "WPFTweaksDisableExplorerAutoDiscovery",
     "WPFTweaksWPBT",
-    "WPFTweaksLocation",
     "WPFTweaksServices",
     "WPFTweaksTelemetry",
     "WPFTweaksDeliveryOptimization",
-    "WPFTweaksDiskCleanup",
     "WPFTweaksDeleteTempFiles",
     "WPFTweaksEndTaskOnTaskbar",
     "WPFTweaksRestorePoint"
@@ -23,9 +20,7 @@
     "WPFTweaksRestorePoint",
     "WPFTweaksActivity",
     "WPFTweaksConsumerFeatures",
-    "WPFTweaksDisableExplorerAutoDiscovery",
     "WPFTweaksWPBT",
-    "WPFTweaksLocation",
     "WPFTweaksServices",
     "WPFTweaksTelemetry",
     "WPFTweaksDeliveryOptimization",
