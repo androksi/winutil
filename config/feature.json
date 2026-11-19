@@ -11,16 +11,6 @@
     "InvokeScript": [],
     "link": "https://winutil.christitus.com/code-reference/features/features/dotnet"
   },
-  "WPFFixesNTPPool": {
-    "Content": "NTP Server - Enable",
-    "Description": "Replaces the default Windows NTP server (time.windows.com) with pool.ntp.org for improved time synchronization accuracy and reliability.",
-    "category": "Fixes",
-    "panel": "1",
-    "Type": "Button",
-    "ButtonWidth": "300",
-    "function": "Invoke-WPFFixesNTPPool",
-    "link": "https://winutil.christitus.com/code-reference/features/fixes/ntppool"
-  },
   "WPFFeatureshyperv": {
     "Content": "Hyper-V - Enable",
     "Description": "Hyper-V is a hardware virtualization product developed by Microsoft that allows users to create and manage virtual machines.",
@@ -56,25 +46,6 @@
     ],
     "InvokeScript": [],
     "link": "https://winutil.christitus.com/code-reference/features/features/wsl"
-  },
-  "WPFFeaturenfs": {
-    "Content": "Network File System (NFS) - Enable",
-    "Description": "Network File System (NFS) is a mechanism for storing files on a network.",
-    "category": "Features",
-    "panel": "1",
-    "feature": [
-      "ServicesForNFS-ClientOnly",
-      "ClientForNFS-Infrastructure",
-      "NFS-Administration"
-    ],
-    "InvokeScript": [
-      "nfsadmin client stop",
-      "Set-ItemProperty -Path 'HKLM:\\SOFTWARE\\Microsoft\\ClientForNFS\\CurrentVersion\\Default' -Name 'AnonymousUID' -Type DWord -Value 0",
-      "Set-ItemProperty -Path 'HKLM:\\SOFTWARE\\Microsoft\\ClientForNFS\\CurrentVersion\\Default' -Name 'AnonymousGID' -Type DWord -Value 0",
-      "nfsadmin client start",
-      "nfsadmin client localhost config fileaccess=755 SecFlavors=+sys -krb5 -krb5i"
-    ],
-    "link": "https://winutil.christitus.com/code-reference/features/features/nfs"
   },
   "WPFFeatureRegBackup": {
     "Content": "Registry Backup (Daily Task 12:30am) - Enable",
@@ -133,33 +104,6 @@
     "ButtonWidth": "300",
     "function": "Invoke-WPFFeatureInstall",
     "link": "https://winutil.christitus.com/code-reference/features/features/install"
-  },
-  "WPFPanelAutologin": {
-    "Content": "AutoLogon - Run",
-    "category": "Fixes",
-    "panel": "1",
-    "Type": "Button",
-    "ButtonWidth": "300",
-    "function": "Invoke-WPFPanelAutologin",
-    "link": "https://winutil.christitus.com/code-reference/features/fixes/autologin"
-  },
-  "WPFFixesUpdate": {
-    "Content": "Windows Update - Reset",
-    "category": "Fixes",
-    "panel": "1",
-    "Type": "Button",
-    "ButtonWidth": "300",
-    "function": "Invoke-WPFFixesUpdate",
-    "link": "https://winutil.christitus.com/code-reference/features/fixes/update"
-  },
-  "WPFFixesNetwork": {
-    "Content": "Network - Reset",
-    "category": "Fixes",
-    "panel": "1",
-    "Type": "Button",
-    "ButtonWidth": "300",
-    "function": "Invoke-WPFFixesNetwork",
-    "link": "https://winutil.christitus.com/code-reference/features/fixes/network"
   },
   "WPFPanelDISM": {
     "Content": "System Corruption Scan - Run",
@@ -332,32 +276,5 @@
       "rstrui.exe"
     ],
     "link": "https://winutil.christitus.com/code-reference/features/legacy-windows-panels/restore"
-  },
-  "WPFWinUtilInstallPSProfile": {
-    "Content": "CTT PowerShell Profile - Install",
-    "category": "Powershell Profile Powershell 7+ Only",
-    "panel": "2",
-    "Type": "Button",
-    "ButtonWidth": "300",
-    "function": "Invoke-WinUtilInstallPSProfile",
-    "link": "https://winutil.christitus.com/code-reference/features/powershell-profile-powershell-7--only/installpsprofile"
-  },
-  "WPFWinUtilUninstallPSProfile": {
-    "Content": "CTT PowerShell Profile - Remove",
-    "category": "Powershell Profile Powershell 7+ Only",
-    "panel": "2",
-    "Type": "Button",
-    "ButtonWidth": "300",
-    "function": "Invoke-WinUtilUninstallPSProfile",
-    "link": "https://winutil.christitus.com/code-reference/features/powershell-profile-powershell-7--only/uninstallpsprofile"
-  },
-  "WPFWinUtilSSHServer": {
-    "Content": "OpenSSH Server - Enable",
-    "category": "Remote Access",
-    "panel": "2",
-    "Type": "Button",
-    "ButtonWidth": "300",
-    "function": "Invoke-WPFSSHServer",
-    "link": "https://winutil.christitus.com/code-reference/features/remote-access/sshserver"
   }
 }
