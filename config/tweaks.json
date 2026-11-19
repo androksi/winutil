@@ -1472,7 +1472,7 @@
   },
   "WPFToggleBingSearch": {
     "Content": "Start Menu Bing Search",
-    "Description": "Toggles Bing web search results in Windows Search.",
+    "Description": "Toggles Bing web search results in Windows Search. Turning it off also hides recent search entries in the File Explorer search box.",
     "category": "Customize Preferences",
     "panel": "2",
     "Type": "Toggle",
@@ -1484,7 +1484,25 @@
         "Type": "DWord",
         "OriginalValue": "0",
         "DefaultState": "true"
+      },
+      {
+        "Path": "HKCU:\\Software\\Policies\\Microsoft\\Windows\\Explorer",
+        "Name": "DisableSearchBoxSuggestions",
+        "Value": "<RemoveEntry>",
+        "Type": "DWord",
+        "OriginalValue": "1",
+        "DefaultState": "true"
       }
+    ],
+    "InvokeScript": [
+      "
+      Invoke-WinUtilExplorerUpdate -action \"restart\"
+      "
+    ],
+    "UndoScript": [
+      "
+      Invoke-WinUtilExplorerUpdate -action \"restart\"
+      "
     ],
     "link": "https://winutil.christitus.com/code-reference/tweaks/customize-preferences/bingsearch"
   },
