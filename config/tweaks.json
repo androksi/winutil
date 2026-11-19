@@ -1276,48 +1276,6 @@
     ],
     "link": "https://winutil.christitus.com/code-reference/tweaks/customize-preferences/verboselogon"
   },
-  "WPFToggleNewOutlook": {
-    "Content": "Microsoft Outlook New Version",
-    "Description": "This will ensure the new Outlook application is used.",
-    "category": "Customize Preferences",
-    "panel": "2",
-    "Type": "Toggle",
-    "registry": [
-      {
-        "Path": "HKCU:\\SOFTWARE\\Microsoft\\Office\\16.0\\Outlook\\Preferences",
-        "Name": "UseNewOutlook",
-        "Value": "1",
-        "Type": "DWord",
-        "OriginalValue": "0",
-        "DefaultState": "true"
-      },
-      {
-        "Path": "HKCU:\\Software\\Microsoft\\Office\\16.0\\Outlook\\Options\\General",
-        "Name": "HideNewOutlookToggle",
-        "Value": "0",
-        "Type": "DWord",
-        "OriginalValue": "1",
-        "DefaultState": "true"
-      },
-      {
-        "Path": "HKCU:\\Software\\Policies\\Microsoft\\Office\\16.0\\Outlook\\Options\\General",
-        "Name": "DoNewOutlookAutoMigration",
-        "Value": "0",
-        "Type": "DWord",
-        "OriginalValue": "0",
-        "DefaultState": "false"
-      },
-      {
-        "Path": "HKCU:\\Software\\Policies\\Microsoft\\Office\\16.0\\Outlook\\Preferences",
-        "Name": "NewOutlookMigrationUserSetting",
-        "Value": "0",
-        "Type": "DWord",
-        "OriginalValue": "<RemoveEntry>",
-        "DefaultState": "true"
-      }
-    ],
-    "link": "https://winutil.christitus.com/code-reference/tweaks/customize-preferences/newoutlook"
-  },
     "WPFToggleScrollbars": {
     "Content": "Scrollbars Always Visible",
     "Description": "If enabled, scrollbars will always be visible. If disabled, Windows will automatically hide scrollbars when not in use.",
@@ -1524,23 +1482,6 @@
     ],
     "link": "https://winutil.christitus.com/code-reference/tweaks/customize-preferences/loginblur"
   },
-  "WPFToggleDisableLockscreen": {
-    "Content": "Lock Screen - Disable",
-    "Description": "Skips the lock screen entirely and goes directly to the sign-in screen on boot and wake.",
-    "category": "Customize Preferences",
-    "panel": "2",
-    "Type": "Toggle",
-    "registry": [
-      {
-        "Path": "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\Personalization",
-        "Name": "NoLockScreen",
-        "Value": "1",
-        "Type": "DWord",
-        "OriginalValue": "<RemoveEntry>"
-      }
-    ],
-    "link": "https://winutil.christitus.com/code-reference/tweaks/customize-preferences/disablelockscreen"
-  },
   "WPFToggleStickyKeys": {
     "Content": "Sticky Keys",
     "Description": "Toggles the Sticky Keys, which activate when clicking shift rapidly.",
@@ -1622,32 +1563,6 @@
       }
     ],
     "link": "https://winutil.christitus.com/code-reference/tweaks/customize-preferences/taskview"
-  },
-  "WPFToggleGameMode": {
-    "Content": "Game Mode",
-    "Description": "Toggles Windows prioritizes gaming performance by allocating system resources to games.",
-    "category": "Customize Preferences",
-    "panel": "2",
-    "Type": "Toggle",
-    "registry": [
-      {
-        "Path": "HKCU:\\Software\\Microsoft\\GameBar",
-        "Name": "AllowAutoGameMode",
-        "Value": "1",
-        "Type": "DWord",
-        "OriginalValue": "0",
-        "DefaultState": "true"
-      },
-      {
-        "Path": "HKCU:\\Software\\Microsoft\\GameBar",
-        "Name": "AutoGameModeEnabled",
-        "Value": "1",
-        "Type": "DWord",
-        "OriginalValue": "0",
-        "DefaultState": "true"
-      }
-    ],
-    "link": "https://winutil.christitus.com/code-reference/tweaks/customize-preferences/gamemode"
   },
   "WPFToggleLongPaths": {
     "Content": "Enable Long Paths",
