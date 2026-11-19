@@ -77,35 +77,6 @@
     ],
     "link": "https://winutil.christitus.com/code-reference/tweaks/essential-tweaks/widget"
   },
- "WPFTweaksRevertStartMenu": {
-    "Content": "Start Menu Previous Layout - Enable",
-    "Description": "Bring back the old Start Menu layout from before the gradual rollout of the new one in 25H2. On newer versions of Windows !!THIS TWEAK WILL NOT WORK!!",
-    "category": "Essential Tweaks",
-    "panel": "1",
-    "registry": [
-      {
-        "Path": "HKLM:\\SYSTEM\\ControlSet001\\Control\\FeatureManagement\\Overrides\\8\\3036241548",
-        "Name": "EnabledState",
-        "Value": "1",
-        "Type": "DWord",
-        "OriginalValue": "<RemoveEntry>"
-      }
-    ],
-    "link": "https://winutil.christitus.com/code-reference/tweaks/essential-tweaks/revertstartmenu"
-  },
-  "WPFTweaksDisableStoreSearch": {
-    "Content": "Microsoft Store Recommended Search Results - Disable",
-    "Description": "Will not display recommended Microsoft Store apps when searching for apps in the Start menu.",
-    "category": "Essential Tweaks",
-    "panel": "1",
-    "InvokeScript": [
-      "icacls \"$Env:LocalAppData\\Packages\\Microsoft.WindowsStore_8wekyb3d8bbwe\\LocalState\\store.db\" /deny *S-1-1-0:F"
-    ],
-    "UndoScript": [
-      "icacls \"$Env:LocalAppData\\Packages\\Microsoft.WindowsStore_8wekyb3d8bbwe\\LocalState\\store.db\" /grant *S-1-1-0:F"
-    ],
-    "link": "https://winutil.christitus.com/code-reference/tweaks/essential-tweaks/disablestoresearch"
-  },
   "WPFTweaksLocation": {
     "Content": "Location Tracking - Disable",
     "Description": "Disables Location Tracking.",
@@ -284,29 +255,6 @@
       }
     ],
     "link": "https://winutil.christitus.com/code-reference/tweaks/z--advanced-tweaks---caution/bravedebloat"
-  },
-  "WPFTweaksDisableWarningForUnsignedRdp": {
-    "Content": "RDP Unsigned File Warnings - Disable",
-    "Description": "Disables warnings shown when launching unsigned RDP files introduced with the latest Windows 10 and 11 updates.",
-    "category": "z__Advanced Tweaks - CAUTION",
-    "panel": "1",
-    "registry": [
-      {
-        "Path": "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows NT\\Terminal Services\\Client",
-        "Name": "RedirectionWarningDialogVersion",
-        "Value": "1",
-        "Type": "DWord",
-        "OriginalValue": "<RemoveEntry>"
-      },
-      {
-        "Path": "HKCU:\\SOFTWARE\\Microsoft\\Terminal Server Client",
-        "Name": "RdpLaunchConsentAccepted",
-        "Value": "1",
-        "Type": "DWord",
-        "OriginalValue": "<RemoveEntry>"
-      }
-    ],
-    "link": "https://winutil.christitus.com/code-reference/tweaks/z--advanced-tweaks---caution/disablewarningforunsignedrdp"
   },
   "WPFTweaksEdgeDebloat": {
     "Content": "Microsoft Edge - Debloat",
@@ -587,60 +535,6 @@
     ],
     "link": "https://winutil.christitus.com/code-reference/tweaks/essential-tweaks/deliveryoptimization"
   },
-  "WPFTweaksRemoveEdge": {
-    "Content": "Microsoft Edge - Remove",
-    "Description": "Uninstalls Microsoft Edge by creating dummy MicrosoftEdge.exe file in the legacy Edge folder. This tricks Windows into unlocking the official Edge uninstaller allowing for a system-level removal.",
-    "category": "z__Advanced Tweaks - CAUTION",
-    "panel": "1",
-    "InvokeScript": [
-      "
-      $EdgeAppDir = \"$Env:ProgramFiles (x86)\\Microsoft\\Edge\\Application\"
-      $Path = $null
-      if (Test-Path -LiteralPath $EdgeAppDir -ErrorAction Stop) {
-          $InstallerPattern = Join-Path $EdgeAppDir \"*\\Installer\\setup.exe\"
-          if (Test-Path -Path $InstallerPattern -ErrorAction Stop) {
-              $Path = Resolve-Path -Path $InstallerPattern -ErrorAction Stop | Select-Object -Last 1
-          }
-      }
-
-      if ($Path) {
-          New-Item -Path \"$Env:SystemRoot\\SystemApps\\Microsoft.MicrosoftEdge_8wekyb3d8bbwe\\MicrosoftEdge.exe\" -Force
-          Start-Process -FilePath $Path -ArgumentList \"--uninstall --system-level --force-uninstall --delete-profile\" -Wait
-          Write-Host \"Microsoft Edge was removed\"
-      } else {
-          Write-Host \"Microsoft Edge is not installed\"
-      }
-      "
-    ],
-    "UndoScript": [
-      "
-      Write-Host \"Installing Microsoft Edge...\"
-      winget install Microsoft.Edge --source winget
-      "
-    ],
-    "link": "https://winutil.christitus.com/code-reference/tweaks/z--advanced-tweaks---caution/removeedge"
-  },
-  "WPFTweaksDisableBitLocker": {
-    "Content": "BitLocker - Disable",
-    "Description": "Disables BitLocker.",
-    "category": "Essential Tweaks",
-    "panel": "1",
-    "InvokeScript": [
-      "
-      $bitLockerVolume = Get-BitLockerVolume -MountPoint $Env:SystemDrive -ErrorAction Stop
-
-      if ($bitLockerVolume.VolumeStatus -eq 'FullyDecrypted') {
-          Write-Host \"BitLocker is already disabled on $($Env:SystemDrive).\"
-      } else {
-          Disable-BitLocker -MountPoint $Env:SystemDrive -ErrorAction Stop
-      }
-      "
-    ],
-    "UndoScript": [
-      "Enable-BitLocker -MountPoint $Env:SystemDrive"
-    ],
-    "link": "https://winutil.christitus.com/code-reference/tweaks/essential-tweaks/disablebitlocker"
-  },
   "WPFTweaksUTC": {
     "Content": "Date & Time - Set Time to UTC",
     "Description": "Essential for computers that are dual booting. Fixes the time sync with Linux systems.",
@@ -915,62 +809,6 @@
     ],
     "link": "https://winutil.christitus.com/code-reference/tweaks/z--advanced-tweaks---caution/storage"
   },
-  "WPFTweaksWindowsAI": {
-    "Content": "Windows AI - Disable And Remove",
-    "Description": "Removes and disables all AI features/packages",
-    "category": "z__Advanced Tweaks - CAUTION",
-    "panel": "1",
-    "registry": [
-      {
-        "Path": "HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer",
-        "Name": "SettingsPageVisibility",
-        "Value": "hide:aicomponents",
-        "Type": "String",
-        "OriginalValue": "<RemoveEntry>"
-      },
-      {
-        "Path": "HKLM:\\SOFTWARE\\Policies\\WindowsNotepad",
-        "Name": "DisableAIFeatures",
-        "Value": "1",
-        "Type": "DWord",
-        "OriginalValue": "<RemoveEntry>"
-      }
-    ],
-    "InvokeScript": [
-      "
-      $Appx = (Get-AppxPackage MicrosoftWindows.Client.CoreAI).PackageFullName
-      $Sid = (Get-LocalUser $Env:UserName).Sid.Value
-
-      New-Item \"HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Appx\\AppxAllUserStore\\EndOfLife\\$Sid\\$Appx\" -Force
-
-      Get-AppxPackage -AllUsers \"*Copilot*\" | Remove-AppxPackage -AllUsers
-      winget uninstall -e --name \"Copilot\" --silent --force --accept-source-agreements 2>$null
-      Get-AppxPackage -AllUsers Microsoft.MicrosoftOfficeHub | Remove-AppxPackage -AllUsers
-
-      if ($Appx) {
-          Remove-AppxPackage $Appx
-      }
-
-      # WSAIFabricSvc only exists on some Windows 11 builds; without the guard a
-      # missing service aborts the rest of this script block and Recall stays enabled
-      if (Get-Service -Name WSAIFabricSvc -ErrorAction SilentlyContinue) {
-          Set-Service -Name WSAIFabricSvc -StartupType Disabled
-      }
-      # Store/MSIX PowerShell 7 can hang or fail COM activation in DISM.
-      $RecallCommand = {
-          Disable-WindowsOptionalFeature -FeatureName Recall -Online -NoRestart -ErrorAction Stop | Out-Null
-      }
-      $RecallOutput = powershell.exe -NoProfile -NonInteractive -Command $RecallCommand 2>&1
-      if ($LASTEXITCODE -ne 0) {
-          throw \"Failed to disable Recall (exit code $LASTEXITCODE): $(($RecallOutput | Out-String).Trim())\"
-      }
-      $RecallOutput | ForEach-Object { Write-Host $_ }
-
-      Write-Host \"Windows AI Disabled\"
-      "
-    ],
-    "link": "https://winutil.christitus.com/code-reference/tweaks/z--advanced-tweaks---caution/windowsai"
-  },
   "WPFTweaksWPBT": {
     "Content": "Windows Platform Binary Table (WPBT) - Disable",
     "Description": "If enabled, WPBT allows your computer vendor to execute programs at boot time, such as anti-theft software, software drivers, as well as force install software without user consent. Poses potential security risk.",
@@ -1002,47 +840,6 @@
       }
     ],
     "link": "https://winutil.christitus.com/code-reference/tweaks/essential-tweaks/preventdevicemetadatafromnetwork"
-  },
-  "WPFTweaksRazerBlock": {
-    "Content": "Razer Software Auto-Install - Disable",
-    "Description": "Blocks ALL Razer Software installations. The hardware works fine without any software.",
-    "category": "z__Advanced Tweaks - CAUTION",
-    "panel": "1",
-    "registry": [
-      {
-        "Path": "HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\DriverSearching",
-        "Name": "SearchOrderConfig",
-        "Value": "0",
-        "Type": "DWord",
-        "OriginalValue": "1"
-      },
-      {
-        "Path": "HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Device Installer",
-        "Name": "DisableCoInstallers",
-        "Value": "1",
-        "Type": "DWord",
-        "OriginalValue": "0"
-      }
-    ],
-    "InvokeScript": [
-      "
-      $RazerPath = \"$Env:SystemRoot\\Installer\\Razer\"
-
-      if (Test-Path $RazerPath) {
-        Remove-Item $RazerPath\\* -Recurse -Force
-      } else {
-        New-Item -Path $RazerPath -ItemType Directory
-      }
-
-      icacls $RazerPath /deny \"*S-1-1-0:(W)\"
-      "
-    ],
-    "UndoScript": [
-      "
-      icacls \"$Env:SystemRoot\\Installer\\Razer\" /remove:d *S-1-1-0
-      "
-    ],
-    "link": "https://winutil.christitus.com/code-reference/tweaks/z--advanced-tweaks---caution/razerblock"
   },
   "WPFTweaksLogiBlock": {
     "Content": "Logitech Download Assistant Auto-Install - Disable",
@@ -1101,32 +898,6 @@
       }
     ],
     "link": "https://winutil.christitus.com/code-reference/tweaks/z--advanced-tweaks---caution/disablenotifications"
-  },
-  "WPFTweaksBlockAdobeNet": {
-    "Content": "Adobe URL Block List - Enable",
-    "Description": "Reduces user interruptions by selectively blocking connections to Adobe's activation and telemetry servers. Credit: Ruddernation-Designs",
-    "category": "z__Advanced Tweaks - CAUTION",
-    "panel": "1",
-    "InvokeScript": [
-      "
-      $hostsUrl = Invoke-RestMethod -Uri https://github.com/Ruddernation-Designs/Adobe-URL-Block-List/raw/refs/heads/master/hosts
-      Add-Content -Path \"$Env:SystemRoot\\System32\\drivers\\etc\\hosts\" -Value $hostsUrl
-
-      ipconfig /flushdns
-      Write-Host 'Added Adobe url block list from host file'
-      "
-    ],
-    "UndoScript": [
-      "
-      Set-Content \"$Env:SystemRoot\\System32\\drivers\\etc\\hosts\" (
-          (Get-Content \"$Env:SystemRoot\\System32\\drivers\\etc\\hosts\") -join \"`n\" -replace '(?s)#New Ver.*', ''
-      )
-
-      ipconfig /flushdns
-      Write-Host 'Removed Adobe url block list from host file'
-      "
-    ],
-    "link": "https://winutil.christitus.com/code-reference/tweaks/z--advanced-tweaks---caution/blockadobenet"
   },
 
 "WPFTweaksRightClickMenu": {
@@ -1228,28 +999,6 @@
       "$search = Get-Service -Name WSearch -ErrorAction SilentlyContinue\n      if ($search -and $search.StartType -eq 'Automatic' -and $search.Status -ne 'Running') {\n        Start-Service -Name WSearch -ErrorAction Stop\n      }"
     ],
     "link": "https://winutil.christitus.com/code-reference/tweaks/z--advanced-tweaks---caution/disablesearchindexing"
-  },
-  "WPFTweaksDisableIPv6": {
-    "Content": "IPv6 - Disable",
-    "Description": "Disables IPv6.",
-    "category": "z__Advanced Tweaks - CAUTION",
-    "panel": "1",
-    "registry": [
-      {
-        "Path": "HKLM:\\SYSTEM\\CurrentControlSet\\Services\\Tcpip6\\Parameters",
-        "Name": "DisabledComponents",
-        "Value": "255",
-        "Type": "DWord",
-        "OriginalValue": "0"
-      }
-    ],
-    "InvokeScript": [
-      "Disable-NetAdapterBinding -Name * -ComponentID ms_tcpip6"
-    ],
-    "UndoScript": [
-      "Enable-NetAdapterBinding -Name * -ComponentID ms_tcpip6"
-    ],
-    "link": "https://winutil.christitus.com/code-reference/tweaks/z--advanced-tweaks---caution/disableipv6"
   },
   "WPFTweaksDisableBGapps": {
     "Content": "Background Apps - Disable",

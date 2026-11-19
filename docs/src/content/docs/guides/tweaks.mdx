@@ -65,8 +65,6 @@ During AppX installation or removal, the window-level progress bar shows the cur
 ### Essential Tweaks
 Essential Tweaks are the safest starting point for most systems. They focus on lower-risk changes that improve usability, reduce noise, and avoid the more invasive changes found in advanced options.
 
-**BitLocker - Disable** reports when the system drive is already fully decrypted and skips disabling it again. An encrypted drive with suspended protection still needs decryption.
-
 **Telemetry - Disable** removes an already absent feedback-frequency registry value without treating it as an error. It leaves the Windows Error Reporting service (`WerSvc`) and Defender's automatic sample submission alone, so crash reports and Defender's cloud protection keep working. Earlier versions disabled both; if you applied one of those, set `WerSvc` back to Manual in `services.msc` and turn **Automatic sample submission** back on in Windows Security.
 
 **Disk Cleanup - Run** cleans superseded update components without `/ResetBase`, so installed updates can still be uninstalled if one causes problems.
@@ -80,8 +78,6 @@ Essential Tweaks are the safest starting point for most systems. They focus on l
 **Windows Search Indexing - Disable** stops the Windows Search service and sets it to Disabled. That lowers background disk activity on mechanical drives, but file searches in Explorer and the Start menu become noticeably slower because Windows no longer maintains a search index. Apply changes the startup type only while it is still the default Automatic, and undo restores Automatic only while it is still Disabled; the service is stopped only while it is Disabled and started only while it is Automatic. A startup type changed elsewhere, such as Manual, is left alone and logged as a warning.
 
 Advanced Tweaks are for users who understand the side effects of deeper Windows changes. Create a restore point first, review each item, and avoid treating the full advanced list as a one-click baseline.
-
-**Windows AI - Disable And Remove** runs the Recall feature change through Windows PowerShell 5.1 to avoid DISM hangs and COM errors in Microsoft Store PowerShell 7. It suppresses automatic restarts and reports failures in the tweak log.
 
 **Microsoft OneDrive - Remove** skips folder cleanup when the OneDrive path is empty or absent, and stops FileCoAuth and Explorer only when they are running. Nonempty OneDrive folders, including folders containing only hidden files, are kept.
 

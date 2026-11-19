@@ -31,11 +31,8 @@
     "WPFTweaksDeliveryOptimization",
     "WPFTweaksDeleteTempFiles",
     "WPFTweaksEndTaskOnTaskbar",
-    "WPFTweaksDisableStoreSearch",
-    "WPFTweaksRevertStartMenu",
     "WPFTweaksWidget",
     "WPFTweaksRemoveOneDrive",
-    "WPFTweaksWindowsAI",
     "WPFTweaksRightClickMenu"
   ],
   "AppxDefault": [
