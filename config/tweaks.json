@@ -1151,7 +1151,7 @@
     "InvokeScript": [
       "
       cleanmgr.exe /d C: /VERYLOWDISK
-      Dism.exe /online /Cleanup-Image /StartComponentCleanup /ResetBase
+      Dism.exe /online /Cleanup-Image /StartComponentCleanup
       "
     ],
     "link": "https://winutil.christitus.com/code-reference/tweaks/essential-tweaks/diskcleanup"
