@@ -67,6 +67,8 @@ Essential Tweaks are the safest starting point for most systems. They focus on l
 
 **Telemetry - Disable** removes an already absent feedback-frequency registry value without treating it as an error. It leaves the Windows Error Reporting service (`WerSvc`) and Defender's automatic sample submission alone, so crash reports and Defender's cloud protection keep working. Earlier versions disabled both; if you applied one of those, set `WerSvc` back to Manual in `services.msc` and turn **Automatic sample submission** back on in Windows Security.
 
+**ConsumerFeatures - Disable** stops Windows from silently installing promoted apps such as LinkedIn or Adobe Express and from suggesting apps in Start. Besides the `DisableWindowsConsumerFeatures` policy, which Windows only fully honors on Enterprise and Education, it turns off the per-user pre-installed, silently installed, OEM, and Start-suggestion settings, so it also works on Home and Pro. It affects only the current user and does not remove apps that are already installed; use **AppX Removal** for those, where the **Default** selection includes LinkedIn and Adobe Express.
+
 **Disk Cleanup - Run** cleans superseded update components without `/ResetBase`, so installed updates can still be uninstalled if one causes problems.
 
 ### Advanced Tweaks (CAUTION)

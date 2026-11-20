@@ -580,7 +580,7 @@
   },
   "WPFTweaksConsumerFeatures": {
     "Content": "ConsumerFeatures - Disable",
-    "Description": "Stops promoted app installs and reduces app suggestions from Microsoft Store content.",
+    "Description": "Stops Windows from silently installing promoted apps (such as LinkedIn or Adobe Express) and suggesting apps in Start, for the current user. Apps that are already installed stay; remove them with AppX Removal.",
     "category": "Essential Tweaks",
     "panel": "1",
     "registry": [
@@ -590,6 +590,34 @@
         "Value": "1",
         "Type": "DWord",
         "OriginalValue": "<RemoveEntry>"
+      },
+      {
+        "Path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager",
+        "Name": "SilentInstalledAppsEnabled",
+        "Value": "0",
+        "Type": "DWord",
+        "OriginalValue": "1"
+      },
+      {
+        "Path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager",
+        "Name": "PreInstalledAppsEnabled",
+        "Value": "0",
+        "Type": "DWord",
+        "OriginalValue": "1"
+      },
+      {
+        "Path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager",
+        "Name": "OemPreInstalledAppsEnabled",
+        "Value": "0",
+        "Type": "DWord",
+        "OriginalValue": "1"
+      },
+      {
+        "Path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager",
+        "Name": "SubscribedContent-338388Enabled",
+        "Value": "0",
+        "Type": "DWord",
+        "OriginalValue": "1"
       }
     ],
     "link": "https://winutil.christitus.com/code-reference/tweaks/essential-tweaks/consumerfeatures"

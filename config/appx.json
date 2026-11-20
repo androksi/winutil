@@ -267,5 +267,21 @@
     "Panel": "0",
     "PackageId": "Microsoft.ZuneVideo",
     "StoreId": "9WZDNCRFJ3P2"
+  },
+  "WPFAppx7EE7776C_LinkedInforWindows": {
+    "Category": "Promoted Third-Party Apps",
+    "Content": "LinkedIn",
+    "Description": "LinkedIn's app, which Windows installs or pins in Start as a promotion after setup.",
+    "Panel": "1",
+    "PackageId": "7EE7776C.LinkedInforWindows",
+    "StoreId": "9WZDNCRFJ4Q7"
+  },
+  "WPFAppxAdobeSystemsIncorporated_AdobeCreativeCloudExpress": {
+    "Category": "Promoted Third-Party Apps",
+    "Content": "Adobe Express",
+    "Description": "Adobe's design app, which Windows installs or pins in Start as a promotion after setup.",
+    "Panel": "1",
+    "PackageId": "AdobeSystemsIncorporated.AdobeCreativeCloudExpress",
+    "StoreId": "9P94LH3Q1CP5"
   }
 }
