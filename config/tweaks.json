@@ -741,6 +741,78 @@
     ],
     "link": "https://winutil.christitus.com/code-reference/tweaks/essential-tweaks/telemetry"
   },
+  "WPFTweaksDisableTipsAndAds": {
+    "Content": "Windows Tips and Ads - Disable",
+    "Description": "Turns off Windows tips and suggestions, the welcome screen after updates, the \"Let's finish setting up your device\" prompts, suggested content in Settings, suggestion notifications, and OneDrive and Microsoft 365 ads in File Explorer, for the current user.",
+    "category": "Essential Tweaks",
+    "panel": "1",
+    "registry": [
+      {
+        "Path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager",
+        "Name": "SubscribedContent-338389Enabled",
+        "Value": "0",
+        "Type": "DWord",
+        "OriginalValue": "1"
+      },
+      {
+        "Path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager",
+        "Name": "SoftLandingEnabled",
+        "Value": "0",
+        "Type": "DWord",
+        "OriginalValue": "1"
+      },
+      {
+        "Path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager",
+        "Name": "SubscribedContent-310093Enabled",
+        "Value": "0",
+        "Type": "DWord",
+        "OriginalValue": "1"
+      },
+      {
+        "Path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager",
+        "Name": "SubscribedContent-338393Enabled",
+        "Value": "0",
+        "Type": "DWord",
+        "OriginalValue": "1"
+      },
+      {
+        "Path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager",
+        "Name": "SubscribedContent-353694Enabled",
+        "Value": "0",
+        "Type": "DWord",
+        "OriginalValue": "1"
+      },
+      {
+        "Path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager",
+        "Name": "SubscribedContent-353696Enabled",
+        "Value": "0",
+        "Type": "DWord",
+        "OriginalValue": "1"
+      },
+      {
+        "Path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\UserProfileEngagement",
+        "Name": "ScoobeSystemSettingEnabled",
+        "Value": "0",
+        "Type": "DWord",
+        "OriginalValue": "<RemoveEntry>"
+      },
+      {
+        "Path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Notifications\\Settings\\Windows.SystemToast.Suggested",
+        "Name": "Enabled",
+        "Value": "0",
+        "Type": "DWord",
+        "OriginalValue": "<RemoveEntry>"
+      },
+      {
+        "Path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced",
+        "Name": "ShowSyncProviderNotifications",
+        "Value": "0",
+        "Type": "DWord",
+        "OriginalValue": "1"
+      }
+    ],
+    "link": "https://winutil.christitus.com/code-reference/tweaks/essential-tweaks/disabletipsandads"
+  },
   "WPFTweaksDeliveryOptimization": {
     "Content": "Delivery Optimization - Disable",
     "Description": "Stops Windows from using your bandwidth to upload updates to other PCs on the internet or local network.",
@@ -987,6 +1059,50 @@
       "
     ],
     "link": "https://winutil.christitus.com/code-reference/tweaks/z--advanced-tweaks---caution/disablespotlight"
+  },
+  "WPFTweaksDisableWindowsAI": {
+    "Content": "Windows AI - Disable",
+    "Description": "Turns off Recall snapshots, Click to Do, and the Image Creator, Cocreator, and generative fill AI features in Paint through Microsoft's policies. Nothing is uninstalled; Undo removes the policies. Turning off Recall snapshots deletes any snapshots already saved.",
+    "category": "z__Advanced Tweaks - CAUTION",
+    "panel": "1",
+    "registry": [
+      {
+        "Path": "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\WindowsAI",
+        "Name": "DisableAIDataAnalysis",
+        "Value": "1",
+        "Type": "DWord",
+        "OriginalValue": "<RemoveEntry>"
+      },
+      {
+        "Path": "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\WindowsAI",
+        "Name": "DisableClickToDo",
+        "Value": "1",
+        "Type": "DWord",
+        "OriginalValue": "<RemoveEntry>"
+      },
+      {
+        "Path": "HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\Paint",
+        "Name": "DisableImageCreator",
+        "Value": "1",
+        "Type": "DWord",
+        "OriginalValue": "<RemoveEntry>"
+      },
+      {
+        "Path": "HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\Paint",
+        "Name": "DisableCocreator",
+        "Value": "1",
+        "Type": "DWord",
+        "OriginalValue": "<RemoveEntry>"
+      },
+      {
+        "Path": "HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\Paint",
+        "Name": "DisableGenerativeFill",
+        "Value": "1",
+        "Type": "DWord",
+        "OriginalValue": "<RemoveEntry>"
+      }
+    ],
+    "link": "https://winutil.christitus.com/code-reference/tweaks/z--advanced-tweaks---caution/disablewindowsai"
   },
   "WPFTweaksRemoveTaskbarPins": {
     "Content": "Taskbar Pinned Apps - Remove",
@@ -1816,6 +1932,70 @@
       }
     ],
     "link": "https://winutil.christitus.com/code-reference/tweaks/customize-preferences/taskview"
+  },
+  "WPFToggleStartRecommendations": {
+    "Content": "Start Menu Recommendations",
+    "Description": "Toggles what the Recommended section of Start shows: recent files, tips and new apps, and account notifications. Turning it off also hides recent files from File Explorer Home and jump lists. The section itself stays; Windows only lets it be hidden on Education editions.",
+    "category": "Customize Preferences",
+    "panel": "2",
+    "Type": "Toggle",
+    "registry": [
+      {
+        "Path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced",
+        "Name": "Start_IrisRecommendations",
+        "Value": "1",
+        "Type": "DWord",
+        "OriginalValue": "0",
+        "DefaultState": "true"
+      },
+      {
+        "Path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced",
+        "Name": "Start_TrackDocs",
+        "Value": "1",
+        "Type": "DWord",
+        "OriginalValue": "0",
+        "DefaultState": "true"
+      },
+      {
+        "Path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced",
+        "Name": "Start_AccountNotifications",
+        "Value": "1",
+        "Type": "DWord",
+        "OriginalValue": "0",
+        "DefaultState": "true"
+      }
+    ],
+    "InvokeScript": [
+      "
+      # Start reads these when it starts
+      Stop-Process -Name StartMenuExperienceHost -Force -ErrorAction SilentlyContinue
+      "
+    ],
+    "UndoScript": [
+      "
+      # Start reads these when it starts
+      Stop-Process -Name StartMenuExperienceHost -Force -ErrorAction SilentlyContinue
+      "
+    ],
+    "link": "https://winutil.christitus.com/code-reference/tweaks/customize-preferences/startrecommendations"
+  },
+  "WPFToggleFastStartup": {
+    "Content": "Fast Startup",
+    "Description": "With Fast Startup on, Shut down hibernates the Windows kernel so the next boot is faster, but the PC never fully shuts down: dual-boot systems can find the Windows drive locked, and some driver problems only clear with Restart. It only works while hibernation is enabled.",
+    "category": "Customize Preferences",
+    "panel": "2",
+    "Type": "Toggle",
+    "registry": [
+      {
+        "Path": "HKLM:\\SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Power",
+        "Name": "HiberbootEnabled",
+        "Value": "1",
+        "Type": "DWord",
+        "OriginalValue": "0",
+        "DefaultState": "true"
+      }
+    ],
+    "link": "https://winutil.christitus.com/code-reference/tweaks/customize-preferences/faststartup"
   },
   "WPFToggleLongPaths": {
     "Content": "Enable Long Paths",
