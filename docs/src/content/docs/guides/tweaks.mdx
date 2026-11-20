@@ -83,6 +83,8 @@ Advanced Tweaks are for users who understand the side effects of deeper Windows 
 
 **Windows Spotlight - Disable** turns off Spotlight images and tips on the lock screen through the same per-user settings that Settings writes, because the Spotlight policies only apply to Enterprise and Education. If Spotlight is the desktop background, the background switches to Picture with the default Windows wallpaper for the current light or dark mode, the "Learn about this picture" desktop icon is removed, and Explorer restarts; a picture or slideshow wallpaper is left alone. Undo turns lock screen Spotlight back on, but desktop Spotlight has to be turned back on in **Settings → Personalization → Background**.
 
+**Taskbar Pinned Apps - Remove** and **Start Menu Pinned Apps - Remove** unpin every app for the current user, and you can pin apps again afterward. Each saves your current pins under `%LocalAppData%\winutil\backup` the first time it runs, and **Undo** puts them back. The taskbar version restarts Explorer, which closes open File Explorer windows. The Start version briefly sets the `ConfigureStartPins` policy to an empty list while Start rebuilds its layout, then restores the policy to what it was, so Start is not left managed by policy.
+
 **Microsoft OneDrive - Remove** skips folder cleanup when the OneDrive path is empty or absent, and stops FileCoAuth and Explorer only when they are running. Nonempty OneDrive folders, including folders containing only hidden files, are kept.
 
 ### O&O ShutUp10++

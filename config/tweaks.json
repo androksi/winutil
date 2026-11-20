@@ -960,6 +960,160 @@
     ],
     "link": "https://winutil.christitus.com/code-reference/tweaks/z--advanced-tweaks---caution/disablespotlight"
   },
+  "WPFTweaksRemoveTaskbarPins": {
+    "Content": "Taskbar Pinned Apps - Remove",
+    "Description": "Unpins every app from the taskbar for the current user and restarts Explorer. Open apps still show, and you can pin apps again afterward. Undo restores the pins you had before.",
+    "category": "z__Advanced Tweaks - CAUTION",
+    "panel": "1",
+    "InvokeScript": [
+      "
+      # The pinned list lives in the Taskband key and the User Pinned\\TaskBar shortcuts. Deleting the
+      # key makes Explorer rebuild it with default pins, so the key is kept and marked empty instead
+      $taskband = 'HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Taskband'
+      $pinnedFolder = Join-Path $Env:APPDATA 'Microsoft\\Internet Explorer\\Quick Launch\\User Pinned\\TaskBar'
+      $backup = Join-Path $Env:LOCALAPPDATA 'winutil\\backup\\TaskbarPins'
+
+      # The first backup is kept, so applying again does not replace the pins Undo restores
+      if (-not (Test-Path -LiteralPath $backup)) {
+          New-Item -ItemType Directory -Path (Join-Path $backup 'TaskBar') -Force | Out-Null
+          if (Test-Path -Path $taskband) {
+              reg.exe export 'HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Taskband' (Join-Path $backup 'Taskband.reg') /y | Out-Null
+              if ($LASTEXITCODE -ne 0) {
+                  Remove-Item -LiteralPath $backup -Recurse -Force
+                  throw \"Could not back up the taskbar pins (reg.exe exit code $LASTEXITCODE).\"
+              }
+          }
+          if (Test-Path -LiteralPath $pinnedFolder) {
+              Get-ChildItem -LiteralPath $pinnedFolder -File | Copy-Item -Destination (Join-Path $backup 'TaskBar') -Force -ErrorAction Stop
+          }
+      }
+
+      # Explorer writes the pinned list back when it exits, so change it while Explorer is stopped
+      Stop-Process -Name explorer -Force -ErrorAction SilentlyContinue
+      if (Test-Path -LiteralPath $pinnedFolder) {
+          Get-ChildItem -LiteralPath $pinnedFolder -File | Remove-Item -Force
+      }
+      if (-not (Test-Path -Path $taskband)) { New-Item -Path $taskband -Force | Out-Null }
+      Set-ItemProperty -Path $taskband -Name Favorites -Value ([byte[]](0xFF)) -Type Binary
+      Remove-ItemProperty -Path $taskband -Name FavoritesResolve -ErrorAction SilentlyContinue
+      Start-Process explorer.exe
+
+      Write-Host \"Removed the taskbar pins. Undo restores them from $backup\"
+      "
+    ],
+    "UndoScript": [
+      "
+      $taskband = 'HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Taskband'
+      $pinnedFolder = Join-Path $Env:APPDATA 'Microsoft\\Internet Explorer\\Quick Launch\\User Pinned\\TaskBar'
+      $backup = Join-Path $Env:LOCALAPPDATA 'winutil\\backup\\TaskbarPins'
+      $regFile = Join-Path $backup 'Taskband.reg'
+
+      if (-not (Test-Path -LiteralPath $backup)) {
+          Write-Warning 'No taskbar pin backup was found, so there is nothing to restore.'
+          Write-WinUtilLog -Level 'WARN' -Component 'Script' -Message 'No taskbar pin backup was found, so there is nothing to restore.'
+          return
+      }
+
+      Stop-Process -Name explorer -Force -ErrorAction SilentlyContinue
+      Remove-Item -Path $taskband -Recurse -Force -ErrorAction SilentlyContinue
+      $importExitCode = 0
+      if (Test-Path -LiteralPath $regFile) {
+          reg.exe import $regFile 2>&1 | Out-Null
+          $importExitCode = $LASTEXITCODE
+      }
+      if (-not (Test-Path -LiteralPath $pinnedFolder)) { New-Item -ItemType Directory -Path $pinnedFolder -Force | Out-Null }
+      Get-ChildItem -LiteralPath (Join-Path $backup 'TaskBar') -File | Copy-Item -Destination $pinnedFolder -Force
+      Start-Process explorer.exe
+
+      if ($importExitCode -ne 0) {
+          throw \"Could not restore the taskbar pin list (reg.exe exit code $importExitCode). The backup was kept in $backup.\"
+      }
+      Remove-Item -LiteralPath $backup -Recurse -Force
+      Write-Host 'Restored the taskbar pins.'
+      "
+    ],
+    "link": "https://winutil.christitus.com/code-reference/tweaks/z--advanced-tweaks---caution/removetaskbarpins"
+  },
+  "WPFTweaksRemoveStartPins": {
+    "Content": "Start Menu Pinned Apps - Remove",
+    "Description": "Unpins every app from the Start menu for the current user. You can pin apps again afterward and they stay. Undo restores the pins you had before.",
+    "category": "z__Advanced Tweaks - CAUTION",
+    "panel": "1",
+    "InvokeScript": [
+      "
+      # Start reads ConfigureStartPins only when it builds a new layout, and on Pro only from the Group
+      # Policy location. Start rebuilds its layout under an empty pinned list, and the policy is then
+      # put back as it was, so pins added later are kept.
+      $localState = Join-Path $Env:LOCALAPPDATA 'Packages\\Microsoft.Windows.StartMenuExperienceHost_cw5n1h2txyewy\\LocalState'
+      $backup = Join-Path $Env:LOCALAPPDATA 'winutil\\backup\\StartPins'
+      $policyKey = 'HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\Explorer'
+
+      $layoutFiles = @(Get-ChildItem -LiteralPath $localState -Filter 'start*.bin' -File -ErrorAction SilentlyContinue)
+      if ($layoutFiles.Count -eq 0) {
+          throw \"No Start layout file was found in $localState.\"
+      }
+
+      # The first backup is kept, so applying again does not replace the pins Undo restores
+      if (-not (Test-Path -LiteralPath $backup)) {
+          New-Item -ItemType Directory -Path $backup -Force | Out-Null
+          $layoutFiles | Copy-Item -Destination $backup -Force -ErrorAction Stop
+      }
+
+      $previousPolicy = (Get-ItemProperty -Path $policyKey -Name ConfigureStartPins -ErrorAction SilentlyContinue).ConfigureStartPins
+      if (-not (Test-Path -Path $policyKey)) { New-Item -Path $policyKey -Force | Out-Null }
+      New-ItemProperty -Path $policyKey -Name ConfigureStartPins -Value '{\"applyOnce\":true,\"pinnedList\":[]}' -PropertyType String -Force | Out-Null
+
+      try {
+          Stop-Process -Name StartMenuExperienceHost -Force -ErrorAction SilentlyContinue
+          Start-Sleep -Milliseconds 500
+          $layoutFiles | Remove-Item -Force -ErrorAction Stop
+          # Windows starts Start again by itself and writes a new layout
+          Stop-Process -Name StartMenuExperienceHost -Force -ErrorAction SilentlyContinue
+
+          $deadline = (Get-Date).AddSeconds(20)
+          while (-not (Get-ChildItem -LiteralPath $localState -Filter 'start*.bin' -File -ErrorAction SilentlyContinue) -and (Get-Date) -lt $deadline) {
+              Start-Sleep -Milliseconds 500
+          }
+          if (-not (Get-ChildItem -LiteralPath $localState -Filter 'start*.bin' -File -ErrorAction SilentlyContinue)) {
+              Write-Warning 'Start did not rebuild its layout in time; open Start once to finish, or run Undo to restore the previous pins.'
+              Write-WinUtilLog -Level 'WARN' -Component 'Script' -Message 'Start did not rebuild its layout within 20 seconds.'
+          }
+          Start-Sleep -Seconds 2
+      } finally {
+          if ($null -ne $previousPolicy) {
+              New-ItemProperty -Path $policyKey -Name ConfigureStartPins -Value $previousPolicy -PropertyType String -Force | Out-Null
+          } else {
+              Remove-ItemProperty -Path $policyKey -Name ConfigureStartPins -ErrorAction SilentlyContinue
+          }
+      }
+
+      Write-Host \"Removed the Start menu pins. Undo restores them from $backup\"
+      "
+    ],
+    "UndoScript": [
+      "
+      $localState = Join-Path $Env:LOCALAPPDATA 'Packages\\Microsoft.Windows.StartMenuExperienceHost_cw5n1h2txyewy\\LocalState'
+      $backup = Join-Path $Env:LOCALAPPDATA 'winutil\\backup\\StartPins'
+
+      $savedFiles = @(Get-ChildItem -LiteralPath $backup -Filter 'start*.bin' -File -ErrorAction SilentlyContinue)
+      if ($savedFiles.Count -eq 0) {
+          Write-Warning 'No Start menu pin backup was found, so there is nothing to restore.'
+          Write-WinUtilLog -Level 'WARN' -Component 'Script' -Message 'No Start menu pin backup was found, so there is nothing to restore.'
+          return
+      }
+
+      Stop-Process -Name StartMenuExperienceHost -Force -ErrorAction SilentlyContinue
+      Start-Sleep -Milliseconds 500
+      $savedFiles | Copy-Item -Destination $localState -Force -ErrorAction Stop
+      # Start loads the restored layout when Windows starts it again
+      Stop-Process -Name StartMenuExperienceHost -Force -ErrorAction SilentlyContinue
+
+      Remove-Item -LiteralPath $backup -Recurse -Force
+      Write-Host 'Restored the Start menu pins.'
+      "
+    ],
+    "link": "https://winutil.christitus.com/code-reference/tweaks/z--advanced-tweaks---caution/removestartpins"
+  },
   "WPFTweaksStorage": {
     "Content": "Storage Sense - Disable",
     "Description": "Storage Sense deletes temp files automatically.",
