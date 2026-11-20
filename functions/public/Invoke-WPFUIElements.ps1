@@ -157,6 +157,24 @@ function Invoke-WPFUIElements {
             $label.SetResourceReference([Windows.Controls.Control]::FontSizeProperty, "HeaderFontSize")
             $label.SetResourceReference([Windows.Controls.Control]::FontFamilyProperty, "HeaderFontFamily")
             $label.UseLayoutRounding = $true
+
+            # In AppX Removal a header selects or clears its whole category, so removing a group
+            # such as Xbox takes one click instead of one per package
+            if ($targetGridName -eq "appxpanel") {
+                $label.Tag = @($organizedData[$panelKey][$category] | ForEach-Object { $_.Name })
+                $label.Cursor = [System.Windows.Input.Cursors]::Hand
+                $label.ToolTip = "Click to select or clear every app in $categoryCleanName"
+                $label.Add_MouseLeftButtonUp({
+                    Switch-WinUtilAppxCategory -Label $this
+                })
+                $label.Add_KeyDown({
+                    if ($_.Key -eq [System.Windows.Input.Key]::Enter -or $_.Key -eq [System.Windows.Input.Key]::Space) {
+                        Switch-WinUtilAppxCategory -Label $this
+                        $_.Handled = $true
+                    }
+                })
+            }
+
             $stackPanelContainer.Children.Add($label) | Out-Null
             $sync[$category] = $label
 

@@ -210,7 +210,7 @@
   "WPFAppxMicrosoft_GamingApp": {
     "Category": "Xbox & Gaming",
     "Content": "Xbox App",
-    "Description": "Serves as the primary gaming library manager, social community interface, and PC Game Pass dashboard.",
+    "Description": "Serves as the primary gaming library manager, social community interface, and PC Game Pass dashboard. Warning: without it, PC Game Pass games cannot be installed or launched.",
     "Panel": "1",
     "PackageId": "Microsoft.GamingApp",
     "StoreId": "9MV0B5HZVK9Z"
@@ -218,7 +218,7 @@
   "WPFAppxMicrosoft_XboxGamingOverlay": {
     "Category": "Xbox & Gaming",
     "Content": "Xbox Game Bar",
-    "Description": "Provides customizable in-game status widgets, audio balancing sliders, system monitoring tools, and gameplay recording.",
+    "Description": "Provides customizable in-game status widgets, audio balancing sliders, system monitoring tools, and gameplay recording. Warning: removing it disables Win+G and game clip and screen recording.",
     "Panel": "1",
     "PackageId": "Microsoft.XboxGamingOverlay",
     "StoreId": "9NZKPSTSNW4P"
